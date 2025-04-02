@@ -1,0 +1,30 @@
+---
+- name: Verify dotfiles installation
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Load role variables
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/../../defaults/main.yml"
+    
+    - name: Check if dotfiles repository is cloned
+      ansible.builtin.stat:
+        path: "{{ dotfiles_repo_local_destination | replace('~', ansible_env.HOME) }}"
+      register: dotfiles_repo
+
+    - name: Fail if dotfiles repo is missing
+      ansible.builtin.fail:
+        msg: "Dotfiles repository is missing at {{ dotfiles_repo_local_destination | replace('~', ansible_env.HOME) }}"
+      when: not dotfiles_repo.stat.exists
+
+    - name: Verify presence of dotfiles
+      ansible.builtin.stat:
+        path: "{{ ansible_env.HOME }}/{{ item }}"
+      loop: "{{ dotfiles_files }}"
+      register: dotfiles_status
+
+    - name: Fail if any dotfile is missing
+      ansible.builtin.fail:
+        msg: "Missing dotfile: {{ item.item }}"
+      when: not item.stat.exists
+      loop: "{{ dotfiles_status.results }}"

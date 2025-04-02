@@ -1,0 +1,10 @@
+---
+roles:
+  - src: https://github.com/afreisinger/ansible-role-git.git
+    scm: git
+    name: afreisinger.git
+
+---
+- src: afreisinger.git
+
+    
