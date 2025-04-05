@@ -1,11 +1,13 @@
 ---
+dependencies: []
+
 galaxy_info:
   role_name: dotfiles
   author: afreisinger
   description: Dotfile installation for UNIX/Linux.
   company: "Adrián Freisinger"
   license: "license (BSD, MIT)"
-  min_ansible_version: 2.10
+  min_ansible_version: "2.10"
   platforms:
     - name: GenericUNIX
       versions:
@@ -25,5 +27,4 @@ galaxy_info:
     - dotfiles
     - configuration
 
-dependencies:
-  - name: afreisinger.git
+
